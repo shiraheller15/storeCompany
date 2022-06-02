@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="./img.jpg" type="image/icon type">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store</title>
+    <link rel="stylesheet" href="./style.css" />  
+    <script src="./productCls.js"></script>
+    <script src="./storeCls.js"></script>
+    <script src="./managerCls.js"></script>
+</head>
+<body >
+    <!-- Title -->
+    <h1><p class="text-center" style="color: #0d6efd;">Store</p></h1>
+    <hr style="border: 2px solid #0d6efd;">
+
+    <!-- Update product -->
+    <div><h3 class="text-center">Update product items:</h3> </div>
+    <div id="update" style="height: 243px;">
+                <!-- Add amount to stock -->
+                <div id="addAmountDiv" style=" width: 33%; padding: 0 10px;float: left;">
+                    <p class="text-center" style=" text-decoration: underline;">Add quantity to stock:</p>
+                    <input class="form-control" name="inputNameToAdd" id="inputNameToAdd" type="text" placeholder=" Enter a product name to update..."> <br/>
+                    <input class="form-control" name="inputAmountToAdd" id="inputAmountToAdd" type="number" placeholder="Enter amount to add..."> <br/>
+                    <button id="addAmount" type="submit" class="btn btn-primary" onclick="store.addAmountToProduct(document.getElementById('inputNameToAdd').value , document.getElementById('inputAmountToAdd').value)">Add to stock</button><br/> 
+                </div>
+                <!-- Remove amount from stock -->
+                <div id="removeAmountDiv" style=" width: 33% ; padding: 0 10px;float: left;">
+                    <p class="text-center" style=" text-decoration: underline;" >Remove quantity from stock:</p>
+                    <input class="form-control" name="inputNameToRemove" id="inputNameToRemove" type="text" placeholder="Enter a product name to update..."> <br/>
+                    <input class="form-control" name="inputAmountToRemove" id="inputAmountToRemove" type="number" placeholder="Enter amount to remove..."> <br/>
+                    <button id="removeAmount" type="submit" class="btn btn-primary" onclick="store.removeAmountToProduct(document.getElementById('inputNameToRemove').value , document.getElementById('inputAmountToRemove').value)">Remove from stock</button><br/> 
+                </div>
+                <!-- Change price -->
+                <div id="changePriceDiv" style=" width: 33%;  padding: 0 10px;float: left;">
+                    <p class="text-center" style=" text-decoration: underline;">Change the price of the product:</p>
+                    <input class="form-control" name="inputNameToChange" id="inputNameToChange" type="text" placeholder="Enter a product name to change..."> <br/>
+                    <input class="form-control" name="inputAmountToChange" id="inputAmountToChange" type="number" placeholder="Enter new price..."> <br/>
+                    <button id="addAmount" type="submit" class="btn btn-primary" onclick="store.changePrice(document.getElementById('inputNameToChange').value , document.getElementById('inputAmountToChange').value)">Change price</button><br/> 
+                </div>
+    </div>
+    <br/>
+    <hr style="border: 2px solid #0d6efd;">
+
+    <!-- Order products -->
+    <div><h3 class="text-center">Order products:</h3> </div>
+    <div id="container" style="width: 200px;">
+        <form style="width: 200px;">
+            <div class="form-group">   
+                <p class="text-center" >Order products by 👇🏻</p>
+                <!-- <select> -->
+                <select id="selectId" class="form-select">
+                    <option value="0">Price</option>
+                    <option value="1">Product name</option>
+                    <option value="2">Category</option>
+                    <option value="3">Out of stock</option>
+                </select>
+                <br/>
+                <!-- Order by price - range -->
+                <div id="range" style="display: none;">
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="600" value="300" class="slider" id="myRange">
+                        <p>Value: <span id="rangeValue" ></span></p>
+                        <button id="btnRange" class="btn btn-primary" type="submit">order by price in range: {0 - your range}</button>
+                    </div>
+                </div>
+                <!-- Order by name - input -->
+                <div id="inputNameDiv" style="display: none;">
+                     Enter name: <input class="form-control" name="inputName" id="inputName" type="text" placeholder="Enter product name..."> <br/>    
+                    <button id="btnName" class="btn btn-primary" type="submit">order by name</button>                           
+                </div>
+                <!-- Order by category - input -->
+                <div id="inputCategoryDiv" style="display: none;">
+                     Enter category: <input class="form-control" name="inputCategory" id="inputCategory" type="text" placeholder="Enter category..."> <br/>                        
+                    <button id="btnCategory" class="btn btn-primary" type="submit">order by category</button>
+                </div>
+            </div>
+            <!-- Submit the selection - button -->
+            <div id="divSubmit" class="form-group">
+                <button id="btnSubmit" class="btn btn-primary" type="submit">Submit</button>
+            </div>
+            <br/>
+        </form>
+    </div>
+    <hr style="border: 2px solid #0d6efd;"> 
+    <br/>
+
+    <!-- Create new product - button -->
+    <div><h3 class="text-center">Create new product:</h3> </div>
+    <div class="form-group">
+          <button id="addProduct" type="submit" class="btn btn-primary" onclick="showFormDetails()">Create new product</button><br/> 
+    </div>
+    <br/>   
+
+    <!-- Form to adding new product details -->
+    <form id="detailsForm" style="display:none ;width: 500px;">
+                name: <input class="form-control" name="name" id="name" type="text" placeholder="Enter name product"> <br/>
+                code: <input class="form-control" name="code" id="code" type="number" placeholder="Enter code"><br/>
+                category: <input class="form-control" name="category" id="category" type="text" placeholder="Enter category"><br/>
+                price: <input class="form-control" name="price" id="price" type="number" placeholder="Enter price"><br/>
+                amount: <input class="form-control" name="amount" id="amount" type="number" placeholder="Enter amount"> <br/>   
+                <button  type="submit" class="btn btn-primary" onclick="store.addNewProduct(document.getElementById('name').value, document.getElementById('code').value, document.getElementById('category').value, document.getElementById('price').value, document.getElementById('amount').value);return false">Add the ptoduct</button>
+    </form>
+    <hr style="border: 2px solid #0d6efd;">
+    <h3>View the product list:</h3> 
+     
+    <!-- Script - Order the product -->
+    <script>
+                // Search Type
+                const btnSubmit = document.querySelector('#btnSubmit');
+                const selectId = document.querySelector('#selectId')
+                btnSubmit.onclick = (event) => {
+                    event.preventDefault();
+                    searchType(selectId.value);
+                    if(selectId.value != 3){
+                        document.getElementById("divSubmit").style.display = "none";
+                    }
+                
+                };
+                // Search Type function
+                function searchType(value) {
+                    if(value == 0){
+                        searchByPrice(); 
+                    } 
+                    else if(value == 1){
+                        searchByName();
+                    } 
+                    else if(value == 2){
+                        searchByCategory();
+                    }
+                    else if(value == 3){
+                        searchOutOfStock();
+                    }
+                }
+
+                //Order by price function
+                var inputRange = document.getElementById("myRange");
+                var output = document.getElementById("rangeValue");
+                output.innerHTML = inputRange.value;
+                inputRange.oninput = function() {
+                output.innerHTML = this.value;
+                }
+                const btnRange = document.querySelector('#btnRange');
+                btnRange.onclick = (event) => {
+                    event.preventDefault();
+                    const orderPrice= document.getElementById("myRange").value;
+                    const filterProductsByPrice = store.products.filter(item => item.price > 0 && item.price < orderPrice);
+                    const filteredList = createList(filterProductsByPrice);
+                    const ul = document.querySelector('ul'); // first ul
+                    ul.replaceWith(filteredList);
+                    document.getElementById("range").style.display = "none";
+                    document.getElementById("divSubmit").style.display = "inherit";
+                };
+
+                // Order by name function
+                const btnName = document.querySelector('#btnName');
+                btnName.onclick = (event) => {
+                    event.preventDefault();
+                    const orderName = document.getElementById('inputName').value;         
+                    const filterProductsByName = store.products.filter(item => item.nameProduct === orderName);
+                    const filteredList = createList(filterProductsByName);
+                    const ul = document.querySelector('ul'); // first ul
+                    ul.replaceWith(filteredList);
+                    document.getElementById("inputNameDiv").style.display = "none";
+                    document.getElementById("divSubmit").style.display = "inherit";  
+                };
+
+                // Order by category function
+                const btnCategory = document.querySelector('#btnCategory');
+                btnCategory.onclick = (event) => {
+                    event.preventDefault();
+                    const orderCtegory= document.getElementById('inputCategory').value;         
+                    const filterProductsByCategory = store.products.filter(item => item.category === orderCtegory);
+                    const filteredList = createList(filterProductsByCategory);
+                    const ul = document.querySelector('ul'); // first ul
+                    ul.replaceWith(filteredList);
+                    document.getElementById("inputCategoryDiv").style.display = "none";
+                    document.getElementById("divSubmit").style.display = "inherit";
+                }; 
+    </script>
+
+    <!-- Script - Create a new product -->
+    <script>
+                // Create new product>
+                function showFormDetails() {
+                    document.getElementById("detailsForm").style.display = "inherit";
+                }        
+    </script>
+   
+</body>
+</html>
+
